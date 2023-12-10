@@ -17,36 +17,56 @@ public class StoreController {
     private final StoreService storeService;
 
 //    @PostMapping(value = "/store")
-    @PostMapping
-    public Store createStore(@RequestBody Store store){
-        return storeService.create(store);
-    }
+//    @PostMapping
+//    public Store createStore(@RequestBody Store store){
+//        return storeService.create(store);
+//    }
 
 //    @GetMapping(value = "/store/{id}")
-    @GetMapping(value = "/{id}")
-    public Store getByIdStore(@PathVariable String id){
-        return storeService.getById(id);
+//    @GetMapping(value = "/{id}")
+//    public Store getByIdStore(@PathVariable String id){
+//        return storeService.getById(id);
+//    }
+
+//    @GetMapping
+//    public List<Store> getAllStore(){
+//        return storeService.getAll();
+//    }
+
+//    @PutMapping(value = "/store/update")
+//    @PutMapping(value = "/update")
+//    public Store updateStore(@RequestBody Store store){
+//        return storeService.update(store);
+//    }
+
+//    @DeleteMapping(value = "/store/{id}")
+//    @DeleteMapping(value = "/{id}")
+//    public void deleteStore(@PathVariable String id){
+//        storeService.delete(id);
+//    }
+
+    @PostMapping
+    public StoreResponse createStores(@RequestBody  StoreRequest storeRequest){
+        return storeService.create(storeRequest);
     }
 
     @GetMapping
-    public List<Store> getAllStore(){
+    public List<StoreResponse> getAllStore(){
         return storeService.getAll();
     }
 
-//    @PutMapping(value = "/store/update")
-    @PutMapping(value = "/update")
-    public Store updateStore(@RequestBody Store store){
-        return storeService.update(store);
+    @GetMapping(value = "/{id}")
+    public StoreResponse getByIdStore(@PathVariable String id){
+        return storeService.getById(id);
     }
 
-//    @DeleteMapping(value = "/store/{id}")
+    @PutMapping
+    public StoreResponse updateStore(@RequestBody StoreRequest storeRequest){
+        return storeService.update(storeRequest);
+    }
+
     @DeleteMapping(value = "/{id}")
     public void deleteStore(@PathVariable String id){
         storeService.delete(id);
-    }
-
-    @PostMapping(value = "/v1")
-    public StoreResponse createStores(@RequestBody  StoreRequest storeRequest){
-        return storeService.create(storeRequest);
     }
 }
