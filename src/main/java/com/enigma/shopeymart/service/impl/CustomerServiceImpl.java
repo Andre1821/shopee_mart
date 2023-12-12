@@ -36,13 +36,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponse getById(String id) {
         Customer customer = customerRepository.findById(id).orElse(null);
-        return CustomerResponse.builder()
-                .id(customer.getId())
-                .customerName(customer.getName())
-                .email(customer.getEmail())
-                .phone(customer.getMobilePhone())
-                .address(customer.getAddress())
-                .build();
+        if (customer != null){
+            return CustomerResponse.builder()
+                    .id(customer.getId())
+                    .customerName(customer.getName())
+                    .email(customer.getEmail())
+                    .phone(customer.getMobilePhone())
+                    .address(customer.getAddress())
+                    .build();
+        }
+        return null;
     }
 
     @Override
