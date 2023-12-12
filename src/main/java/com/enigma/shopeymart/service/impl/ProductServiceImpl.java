@@ -10,6 +10,7 @@ import com.enigma.shopeymart.repository.ProductRepository;
 import com.enigma.shopeymart.service.ProductPriceService;
 import com.enigma.shopeymart.service.ProductService;
 import com.enigma.shopeymart.service.StoreService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
                 .id(product.getId())
                 .productName(product.getName())
                 .description(product.getDescription())
+                .productPrices(product.getProductPrices())
                 .build()).collect(Collectors.toList());
     }
 
@@ -87,6 +89,7 @@ public class ProductServiceImpl implements ProductService {
         else System.out.println("Data with ID "+id+" not exist");
     }
 
+    @Transactional(rollbackOn = Exception.class)
     @Override
     public ProductResponse createProductAndProductPrice(ProductRequest productRequest) {
         StoreResponse storeResponse = this.storeService.getById(productRequest.getStoreId().getId());
@@ -113,15 +116,16 @@ public class ProductServiceImpl implements ProductService {
                 .id(product.getId())
                 .productName(product.getName())
                 .description(product.getDescription())
-                .price(productPrice.getPrice())
-                .stock(productPrice.getStock())
-                .store(StoreResponse.builder()
-                        .id(storeResponse.getId())
-                        .noSiup(storeResponse.getNoSiup())
-                        .storeName(storeResponse.getStoreName())
-                        .phone(storeResponse.getPhone())
-                        .address(storeResponse.getAddress())
-                        .build())
+                .productPrices(product.getProductPrices())
+//                .price(productPrice.getPrice())
+//                .stock(productPrice.getStock())
+//                .store(storeResponse.toBuilder()
+//                        .id(storeResponse.getId())
+//                        .noSiup(storeResponse.getNoSiup())
+//                        .storeName(storeResponse.getStoreName())
+//                        .phone(storeResponse.getPhone())
+//                        .address(storeResponse.getAddress())
+//                        .build())
                 .build();
     }
 }

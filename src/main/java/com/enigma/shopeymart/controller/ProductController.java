@@ -7,10 +7,9 @@ import com.enigma.shopeymart.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,5 +27,10 @@ public class ProductController {
                         .message("Successfully created new product")
                         .data(productResponse)
                         .build());
+    }
+
+    @GetMapping
+    public List<ProductResponse> getAll(){
+        return productService.getAll();
     }
 }
