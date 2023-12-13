@@ -138,7 +138,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductResponse> getAllByNameOrPrice(String name, Long maxPrice, Integer page, Integer size) {
-        //Specification untuk menentukan kriteria pencarian, disini criteria pencarian ditandakan dengan root, root yang dimaksud adalah entity product
+        // pencarian berdasarkan product name
+        // Specification untuk menentukan kriteria pencarian, disini criteria pencarian ditandakan dengan root, root yang dimaksud adalah entity product
         Specification<Product> productSpecification = (root, query, criteriaBuilder) -> {
             //Join digunakan untuk merelasikan antara product dan product price
             Join<Product, ProductPrice> productPrices = root.join("productPrices");
@@ -152,12 +153,16 @@ public class ProductServiceImpl implements ProductService {
             //kode return mengembalikan query dimana pada dasarnya kita membangun klausa where yang sudah ditentukan dari predicate atau kriteria
             return query.where(predicates.toArray(new Predicate[]{})).getRestriction();
         };
+
+        //Pagination
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> products = productRepository.findAll(productSpecification, pageable);
+
+        // untuk mencari product yang pricenya active
         // ini digunakan untuk menyimpan response product yang baru
         List<ProductResponse> productResponses = new ArrayList<>();
         for (Product product : products.getContent()) {
-            // for disini digunakan utuk mengiterasi daftar product yang disimpan dalam object
+            // for disini digunakan untuk mengiterasi daftar product yang disimpan dalam object
             Optional<ProductPrice> productPrice = product.getProductPrices() // optional ini untuk mencari harga yang aktif
                     .stream()
                     .filter(ProductPrice::getIsActive).findFirst();
@@ -166,9 +171,12 @@ public class ProductServiceImpl implements ProductService {
             Store store = productPrice.get().getStore(); // ini digunakan untuk jika harga product yang aktif ditemukan di store
             productResponses.add(toProductResponse(store, product, productPrice.get()));
         }
+
+        // pagination
         return new PageImpl<>(productResponses, pageable, products.getTotalElements());
     }
 
+    // extract method
     private static ProductResponse toProductResponse(Store store, Product product, ProductPrice productPrice) {
         return ProductResponse.builder()
                 .id(product.getId())
