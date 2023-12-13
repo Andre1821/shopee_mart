@@ -1,4 +1,4 @@
-package com.enigma.shopeymart.dto.request;
+package com.enigma.shopeymart.dto.response;
 
 import com.enigma.shopeymart.dto.response.PagingResponse;
 import lombok.AllArgsConstructor;

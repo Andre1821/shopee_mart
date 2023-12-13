@@ -28,4 +28,8 @@ public class Customer {
 
     @Column(nullable = false, unique = true, length = 40)
     private String email;
+
+    @OneToOne
+    @JoinColumn(name = "user_credential_id")
+    private UserCredential userCredential;
 }

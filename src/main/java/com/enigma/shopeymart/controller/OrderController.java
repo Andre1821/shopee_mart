@@ -1,6 +1,7 @@
 package com.enigma.shopeymart.controller;
 
-import com.enigma.shopeymart.dto.request.CommonResponse;
+import com.enigma.shopeymart.constant.AppPath;
+import com.enigma.shopeymart.dto.response.CommonResponse;
 import com.enigma.shopeymart.dto.request.OrderRequest;
 import com.enigma.shopeymart.dto.response.OrderResponse;
 import com.enigma.shopeymart.service.OrderService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/order")
+@RequestMapping(AppPath.ORDER)
 public class OrderController {
     private final OrderService orderService;
 
