@@ -3,6 +3,7 @@ package com.enigma.shopeymart.controller;
 import com.enigma.shopeymart.constant.AppPath;
 import com.enigma.shopeymart.dto.request.AuthRequest;
 import com.enigma.shopeymart.dto.response.CommonResponseAuth;
+import com.enigma.shopeymart.dto.response.LoginResponse;
 import com.enigma.shopeymart.dto.response.RegisterResponse;
 import com.enigma.shopeymart.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class AuthController {
         return authService.registerCustomer(authRequest);
     }
 
-    @PostMapping(value = "/v1")
+    @PostMapping(value = "/register")
     public ResponseEntity<?> registerCustomerComn(@RequestBody AuthRequest authRequest){
         RegisterResponse registerResponse = authService.registerCustomer(authRequest);
 
@@ -33,6 +34,18 @@ public class AuthController {
                         .statusCode(HttpStatus.CREATED.value())
                         .message("Successfully register new acount")
                         .data(registerResponse)
+                        .build());
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest){
+        LoginResponse loginResponse = authService.loginresponse(authRequest);
+
+        return  ResponseEntity.status(HttpStatus.OK)
+                .body(CommonResponseAuth.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Successfully Login")
+                        .data(loginResponse)
                         .build());
     }
 }
