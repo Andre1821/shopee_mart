@@ -5,6 +5,7 @@ import com.enigma.shopeymart.dto.request.CustomerRequest;
 import com.enigma.shopeymart.dto.response.CustomerResponse;
 import com.enigma.shopeymart.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CustomerController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')") // untuk membatasi hak akses fitur
     public List<CustomerResponse> getAllCustomer(){
         return customerService.getAll();
     }
@@ -35,6 +37,7 @@ public class CustomerController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SELER')") // untuk membuat beberapa role bisa akses
     public void deleteCustomer(@PathVariable String id){
         customerService.delete(id);
     }
