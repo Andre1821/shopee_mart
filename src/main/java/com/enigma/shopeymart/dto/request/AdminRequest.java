@@ -9,11 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class AuthRequest {
-    private String username;
-    private String password;
+public class AdminRequest {
     private String name;
-    private String address;
-    private String mobilePhone;
-    private String email;
+    private String phoneNumber;
 }

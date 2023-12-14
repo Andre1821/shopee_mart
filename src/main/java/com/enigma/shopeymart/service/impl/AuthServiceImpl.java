@@ -4,12 +4,10 @@ import com.enigma.shopeymart.constant.ERole;
 import com.enigma.shopeymart.dto.request.AuthRequest;
 import com.enigma.shopeymart.dto.response.LoginResponse;
 import com.enigma.shopeymart.dto.response.RegisterResponse;
-import com.enigma.shopeymart.entity.AppUser;
-import com.enigma.shopeymart.entity.Customer;
-import com.enigma.shopeymart.entity.Role;
-import com.enigma.shopeymart.entity.UserCredential;
+import com.enigma.shopeymart.entity.*;
 import com.enigma.shopeymart.repository.UserCredentialRepository;
 import com.enigma.shopeymart.security.JwtUtil;
+import com.enigma.shopeymart.service.AdminService;
 import com.enigma.shopeymart.service.AuthService;
 import com.enigma.shopeymart.service.CustomerService;
 import com.enigma.shopeymart.service.RoleService;
@@ -32,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserCredentialRepository userCredentialRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomerService customerService;
+    private final AdminService adminService;
     private final RoleService roleService;
     private final ValidationUtil validationUtil;
     private final JwtUtil jwtUtil;
@@ -59,12 +58,49 @@ public class AuthServiceImpl implements AuthService {
             // TODO 3 : set customer
             Customer customer = Customer.builder()
                     .userCredential(userCredential)
-                    .name(authRequest.getCustomerName())
+                    .name(authRequest.getName())
                     .address(authRequest.getAddress())
                     .email(authRequest.getEmail())
                     .mobilePhone(authRequest.getMobilePhone())
                     .build();
             customerService.createNewCustomer(customer);
+
+            return RegisterResponse.builder()
+                    .username(userCredential.getUsername())
+                    .password(userCredential.getPassword())
+                    .role(userCredential.getRole().getName().toString())
+                    .build();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "user already exist");
+        }
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    @Override
+    public RegisterResponse registerAdmin(AuthRequest authRequest) {
+        try {
+            validationUtil.validate(authRequest);
+            // TODO 1 : set role
+            Role role = Role.builder()
+                    .name(ERole.ROLE_ADMIN)
+                    .build();
+            role = roleService.getOrSave(role);
+
+            // TODO 2 : set credential
+            UserCredential userCredential = UserCredential.builder()
+                    .username(authRequest.getUsername().toLowerCase())
+                    .password(passwordEncoder.encode(authRequest.getPassword()))
+                    .role(role)
+                    .build();
+            userCredentialRepository.saveAndFlush(userCredential);
+
+            // TODO 3 : set admin
+            Admin admin = Admin.builder()
+                    .userCredential(userCredential)
+                    .name(authRequest.getName())
+                    .phoneNumber(authRequest.getMobilePhone())
+                    .build();
+            adminService.createNewAdmin(admin);
 
             return RegisterResponse.builder()
                     .username(userCredential.getUsername())

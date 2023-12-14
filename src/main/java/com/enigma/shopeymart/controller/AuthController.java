@@ -25,7 +25,7 @@ public class AuthController {
         return authService.registerCustomer(authRequest);
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/register/customer")
     public ResponseEntity<?> registerCustomerComn(@RequestBody AuthRequest authRequest){
         RegisterResponse registerResponse = authService.registerCustomer(authRequest);
 
@@ -46,6 +46,18 @@ public class AuthController {
                         .statusCode(HttpStatus.OK.value())
                         .message("Successfully Login")
                         .data(loginResponse)
+                        .build());
+    }
+
+    @PostMapping(value = "/register/admin")
+    public ResponseEntity<?> registerAdmin(@RequestBody AuthRequest authRequest){
+        RegisterResponse registerResponse = authService.registerAdmin(authRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(CommonResponseAuth.builder()
+                        .statusCode(HttpStatus.CREATED.value())
+                        .message("Successfully register new acount")
+                        .data(registerResponse)
                         .build());
     }
 }
