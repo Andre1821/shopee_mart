@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final StoreService storeService;
-    private final ProductPriceServiceImpl productPriceServiceImpl;
+    private final ProductPriceService productPriceService;
 
     @Override
     public ProductResponse create(ProductRequest productRequest) {
@@ -118,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
                 .product(product)
                 .store(stores)
                 .build();
-        productPriceServiceImpl.create(productPrice);
+        productPriceService.create(productPrice);
 
         return ProductResponse.builder()
                 .id(product.getId())

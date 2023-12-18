@@ -47,6 +47,8 @@ public class StoreServiceImpl implements StoreService {
 //        if (currentStore != null) storeRepository.deleteById(id);
 //        else System.out.println("Data with ID "+id+" not exist");
 //    }
+
+
     @Override
     public StoreResponse create(StoreRequest storeRequest) {
         Store store = Store.builder()
@@ -113,6 +115,5 @@ public class StoreServiceImpl implements StoreService {
     public void delete(String id) {
         StoreResponse currentStore = getById(id);
         if (currentStore != null) storeRepository.deleteById(id);
-        else System.out.println("Data with ID "+id+" not exist");
     }
 }
