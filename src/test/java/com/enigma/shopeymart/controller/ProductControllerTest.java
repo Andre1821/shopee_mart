@@ -9,15 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 class ProductControllerTest {
@@ -69,15 +67,4 @@ class ProductControllerTest {
         assertEquals(expectedResponse, actualResponse);
     }
 
-    @Test
-    void getAllProdutPage() {
-//        String nameProduct = "Oreo";
-//        Long maxPrice = 100L;
-//        Integer page = 0;
-//        Integer size = 5;
-//
-//        Page<ProductResponse> productResponsePage = new PageImpl<>();
-//
-//        when(productService.getAllByNameOrPrice(nameProduct, maxPrice,page,size)).thenReturn()
-    }
 }

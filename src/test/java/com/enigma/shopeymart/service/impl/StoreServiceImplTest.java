@@ -93,6 +93,9 @@ class StoreServiceImplTest {
     @Test
     void itShouldDeleteDataStoreOneWhenDeleteByIdStore() {
         String storeId = "1";
+        Store dummyStore = new Store("1", "12", "Prediksi", "Ragunan", "0812");
+        when(storeRepository.findById(storeId)).thenReturn(Optional.of(dummyStore));
+
         storeService.delete(storeId);
         verify(storeRepository, times(1)).deleteById(storeId);
     }
